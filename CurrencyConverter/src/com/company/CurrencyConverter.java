@@ -104,12 +104,13 @@ public class CurrencyConverter {
 
                 System.out.println(CONVERT_AMOUNT);
 
-                while (!input.hasNextInt() && input.nextInt() > 0) {
-                    System.out.println(STR_INP_ERR);
-                    input.next();
-                }
-
                 double amount = input.nextInt();
+
+                while (amount < 0) {
+                    System.out.println(STR_INP_ERR);
+                    amount = input.nextInt();
+                    input.nextLine();
+                }
 
                 System.out.println(NEW_CURR);
 
@@ -161,7 +162,13 @@ public class CurrencyConverter {
             case "add":
                 System.out.println("Input the abbreviation for the currency you are adding.");
                 key = input.nextLine().toUpperCase();
+                while (CurrencyBuilder.inCurrencyMap(key, currencyMap)) {
+                    System.out.println("Please input a non existing currency.");
+                    key = input.next().toUpperCase();
+                }
+
                 System.out.println("Input the description of your new currency.");
+                input.nextLine();
                 value = input.nextLine();
                 CurrencyBuilder.addCurrency(key, value, currencyMap, config);
                 CurrencyBuilder.addExchangeRate(exchange, config, key);
